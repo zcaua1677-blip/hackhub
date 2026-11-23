@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>ROOT.IO - Login</title>
+<style>
+body{background:#000;color:#00ff00;font-family:monospace;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.box{border:1px solid #00ff00;padding:30px;width:320px;text-align:center;box-shadow:0 0 20px #00ff00}
+input{width:90%;padding:10px;margin:8px 0;background:#111;color:#00ff00;border:1px solid #00ff00}
+button{background:#00ff00;color:#000;padding:10px 20px;border:none;font-weight:bold;cursor:pointer;width:100%}
+#dashboard{display:none;width:90%;max-width:800px}
+.email{background:#111;border:1px solid #00ff00;padding:15px;margin:10px 0;text-align:left}
+.terminal{background:#000;border:1px solid #00ff00;padding:15px;height:200px;overflow-y:auto;text-align:left}
+</style>
+</head>
+<body>
+
+<div class="box" id="login">
+<h2>ROOT.IO</h2>
+<p>PAINEL SECRETO</p>
+<input id="email" placeholder="Email" value="caua@root.io">
+<input id="senha" type="password" placeholder="Senha" value="root-caua#">
+<button onclick="logar()">ENTRAR</button>
+<p id="erro" style="color:red"></p>
+<p style="font-size:12px">Dica do jogo: caua@root.io / root-caua#</p>
+</div>
+
+<div id="dashboard">
+<h2>BEM-VINDO, CAUÃ 👨‍💻</h2>
+<p>💰 Saldo: <b id="saldo">R$ 0</b> | 💻 PC: INICIANTE | 🎯 Missões: <span id="missoes">1 ativa</span></p>
+
+<div class="email">
+<b>📧 EMAIL - De: Anônimo</b><br>
+<b>Assunto:</b> Missão 1 - Hackeie a Lanchonete<br>
+Recompensa: <b>R$ 500</b><br>
+Use o terminal: <b>scan</b> depois <b>connect lanchonete</b> depois <b>bypass</b>
+<button onclick="aceitar()">ACEITAR MISSÃO</button>
+</div>
+
+<div class="terminal" id="term">
+> Sistema ROOT.IO conectado...<br>
+> Digite 'help' para ver comandos<br>
+</div>
+<input id="cmd" placeholder="Digite um comando... ex: help" onkeydown="if(event.key==='Enter') rodar()">
+</div>
+
+<script>
+let saldo = 0;
+let missaoAceita = false;
+
+function logar(){
+  let e = document.getElementById('email').value;
+  let s = document.getElementById('senha').value;
+  if(e === 'caua@root.io' && s === 'root-caua#'){
+    document.getElementById('login').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+  } else {
+    document.getElementById('erro').innerText = 'ACESSO NEGADO! Email ou senha errados.';
+  }
+}
+function aceitar(){
+  missaoAceita = true;
+  document.getElementById('term').innerHTML += '> Missão aceita! Alvo: Lanchonete<br>';
+}
+function rodar(){
+  let c = document.getElementById('cmd').value.toLowerCase();
+  let t = document.getElementById('term');
+  t.innerHTML += '> ' + c + '<br>';
+  document.getElementById('cmd').value = '';
+
+  if(c === 'help') t.innerHTML += 'Comandos: scan, connect lanchonete, bypass, download, clear<br>';
+  else if(c === 'scan') t.innerHTML += 'Escaneando... Alvo encontrado: LANCHONETE - Segurança FRACA<br>';
+  else if(c === 'connect lanchonete') t.innerHTML += 'Conectado na Lanchonete... Digite bypass<br>';
+  else if(c === 'bypass'){
+    if(!missaoAceita){ t.innerHTML += 'Aceite a missão no email primeiro!<br>'; }
+    else { t.innerHTML += 'SENHA QUEBRADA! Digite download para finalizar<br>'; }
+  }
+  else if(c === 'download'){
+    saldo += 500;
+    document.getElementById('saldo').innerText = 'R$ ' + saldo;
+    document.getElementById('missoes').innerText = '0 ativas - MISSÃO COMPLETA!';
+    t.innerHTML += '✅ ARQUIVOS BAIXADOS! +R$500 no seu dashboard!<br>';
+  }
+  else if(c === 'clear') t.innerHTML = '';
+  else t.innerHTML += 'Comando desconhecido. Digite help<br>';
+  t.scrollTop = t.scrollHeight;
+}
+</script>
+</body>
+</html>
